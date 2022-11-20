@@ -1,7 +1,7 @@
 import re
-from typing import Optional, Union
 from pathlib import Path
 from difflib import get_close_matches
+from typing import Optional, Union
 
 
 class TFDataFinder:
@@ -10,7 +10,7 @@ class TFDataFinder:
             self.path: Path = path
         else:
             raise ValueError(f"Not a torrent file: {path}")
-        self.data: Optional[Union[Path, list[Path]]] = kwargs.get("data", None)
+        self.data: Optional[list[Path]] = kwargs.get("data", None)
         self.tracker: Optional[str] = self.guess_tracker(path, **kwargs)
 
     def __str__(self) -> str:
@@ -43,7 +43,7 @@ class TFDataFinder:
         )
         if close_matches:
             close_matches = [stems_hash[s] for s in close_matches]
-        self.data = close_matches if len(close_matches) > 1 else close_matches[0]
+        self.data = close_matches
 
     @staticmethod
     def guess_tracker(path, read_len: int = 100) -> Optional[str]:
@@ -58,43 +58,4 @@ class TFDataFinder:
             )
         if tracker:
             return tracker.group(1)
-        return tracker
-
-
-def find_files(
-    folder: Path,
-    ignore_permission_err=True,
-    valid_exts: Optional[list[str]] = None,
-    exclude_exts: Optional[list[str]] = None,
-) -> list[Path]:
-    files = list()
-    for path in folder.glob("**/"):
-        try:
-            for f in path.iterdir():
-                if f.is_file():
-                    if valid_exts and f.suffix not in valid_exts:
-                        continue
-                    if exclude_exts and f.suffix in exclude_exts:
-                        continue
-                    files.append(f)
-        except PermissionError as e:
-            if not ignore_permission_err:
-                raise e
-    return files
-
-
-def main():
-    TORRENT_FOLDER = Path("V:\\")
-    DATA_FOLDER = Path("V:\\")
-
-    torrent_files = [
-        TFDataFinder(f) for f in find_files(TORRENT_FOLDER, valid_exts=[".torrent"])
-    ]
-    data_files = find_files(DATA_FOLDER, exclude_exts=[".torrent"])
-    for tf in torrent_files:
-        tf.find_data(data_files)
-        print(tf)
-
-
-if __name__ == "__main__":
-    main()
+        return None
