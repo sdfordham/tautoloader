@@ -5,7 +5,7 @@ from typing import Optional
 
 def find_files(
     folder: Path,
-    ignore_permission_err=True,
+    ignore_permission_err = True,
     valid_exts: Optional[list[str]] = None,
     exclude_exts: Optional[list[str]] = None,
 ) -> list[Path]:
