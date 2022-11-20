@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Optional
 
 from .tfdatafinder import TFDataFinder
-from methods import find_files, add_to_transmission
+from .methods import find_files, add_to_transmission
 
 
 def main(
