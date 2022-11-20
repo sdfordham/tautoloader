@@ -1,8 +1,5 @@
 import subprocess
-import re
-import time
 from getpass import getpass
-from argparse import ArgumentParser
 from pathlib import Path
 from typing import Optional
 
