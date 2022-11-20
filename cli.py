@@ -57,9 +57,9 @@ if __name__ == "__main__":
     parser.add_argument("-t", "--torrent_folder", type=Path)
     parser.add_argument("-d", "--data_folder", type=Path)
     parser.add_argument("-e", "--exclude_tracker", type=str, default=None)
-    parser.add_argument("-u", "--username", type=str)
+    parser.add_argument("-u", "--username", type=str, default=None)
     parser.add_argument("-s", "--sleep", type=int, default=5)
     args = vars(parser.parse_args())
 
-    args["password"] = getpass()
+    args["password"] = getpass() if args["username"] else None
     main(**args)

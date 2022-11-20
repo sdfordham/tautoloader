@@ -5,7 +5,7 @@ from typing import Optional
 
 def find_files(
     folder: Path,
-    ignore_permission_err = True,
+    ignore_permission_err: bool = True,
     valid_exts: Optional[list[str]] = None,
     exclude_exts: Optional[list[str]] = None,
 ) -> list[Path]:
@@ -25,17 +25,25 @@ def find_files(
     return files
 
 
-def add_to_transmission(add: Path, download_dir: Path, username: str, password: str):
+def add_to_transmission(
+    add: Path,
+    download_dir: Path,
+    username: Optional[str] = None,
+    password: Optional[str] = None,
+):
+    args = [
+        "transmission-remote",
+        "--add",
+        str(add),
+        "--download-dir",
+        str(download_dir),
+    ]
+    if username and password:
+        args.append("--auth")
+        args.append(username + ":" + password)
+
     cp = subprocess.run(
-        [
-            "transmission-remote",
-            "--add",
-            str(add),
-            "--download-dir",
-            str(download_dir),
-            "--auth",
-            username + ":" + password,
-        ],
+        args=args,
         capture_output=True,
         check=True,
     )
