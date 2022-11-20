@@ -22,11 +22,11 @@ def main(
     ]
     data_files = find_files(data_folder, exclude_exts=[".torrent"])
     for tf in torrent_files:
-        tf.find_data(data_files)
         if exclude_tracker and (
             tf.tracker is None or re.match(exclude_tracker, tf.tracker)
         ):
             continue
+        tf.find_data(data_files)
         if tf.data:
             print(f"Torrent file @ {tf.path}")
             print(f"  from tracker {tf.tracker}")
