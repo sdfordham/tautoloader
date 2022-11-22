@@ -5,7 +5,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Optional
 
-from .tfdatafinder import TFDataFinder
+from .torrent import TorrentData
 from .methods import find_files, add_to_transmission
 
 
@@ -18,7 +18,7 @@ def main(
     sleep: int,
 ):
     torrent_files = [
-        TFDataFinder(f) for f in find_files(torrent_folder, valid_exts=[".torrent"])
+        TorrentData(f) for f in find_files(torrent_folder, valid_exts=[".torrent"])
     ]
     data_files = find_files(data_folder, exclude_exts=[".torrent"])
     for tf in torrent_files:

@@ -4,7 +4,7 @@ from difflib import get_close_matches
 from typing import Optional, Union
 
 
-class TFDataFinder:
+class TorrentData:
     def __init__(self, path: Path, **kwargs) -> None:
         if self._is_torrent_file(path):
             self.path: Path = path
