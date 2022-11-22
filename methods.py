@@ -54,8 +54,6 @@ def add_to_transmission(
 
 
 def parse_list_output(output: bytes) -> list[TransmissionRow]:
-    decoded = output.decode('utf-8').strip().split('\n')
-    lines = [
-        re.split(r'\s[\s]+', line.strip()) for line in decoded
-    ]
+    decoded = output.decode("utf-8").strip().split("\n")
+    lines = [re.split(r"\s[\s]+", line.strip()) for line in decoded]
     return [TransmissionRow(*l) for l in lines]

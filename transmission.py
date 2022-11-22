@@ -28,11 +28,7 @@ class TransmissionCommand:
         return self
 
     def exec(self) -> str:
-        cp = subprocess.run(
-            self.args,
-            capture_output=True,
-            check=True
-        )
+        cp = subprocess.run(self.args, capture_output=True, check=True)
         return cp.stdout
 
 
