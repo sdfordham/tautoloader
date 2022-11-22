@@ -1,4 +1,6 @@
 import subprocess
+from dataclasses import dataclass
+from typing import Optional
 from pathlib import Path
 
 
@@ -32,3 +34,16 @@ class TransmissionCommand:
             check=True
         )
         return cp.stdout
+
+
+@dataclass
+class TransmissionRow:
+    id_: Optional[str] = None
+    done: Optional[str] = None
+    have: Optional[str] = None
+    eta: Optional[str] = None
+    up: Optional[str] = None
+    down: Optional[str] = None
+    ratio: Optional[str] = None
+    status: Optional[str] = None
+    name: Optional[str] = None

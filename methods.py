@@ -1,6 +1,9 @@
+import re
 import subprocess
 from pathlib import Path
 from typing import Optional
+
+from .transmission import TransmissionRow
 
 
 def find_files(
@@ -48,3 +51,11 @@ def add_to_transmission(
         check=True,
     )
     return cp.stdout
+
+
+def parse_list_output(output: bytes) -> list[TransmissionRow]:
+    decoded = output.decode('utf-8').strip().split('\n')
+    lines = [
+        re.split(r'\s[\s]+', line.strip()) for line in decoded
+    ]
+    return [TransmissionRow(*l) for l in lines]
