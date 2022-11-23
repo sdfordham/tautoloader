@@ -12,8 +12,8 @@ def main(
     torrent_folder: Path,
     data_folder: Path,
     exclude_tracker: Optional[str],
-    username: str,
-    password: str,
+    username: Optional[str],
+    password: Optional[str],
     sleep: int,
 ):
     torrent_files = [
@@ -31,10 +31,14 @@ def main(
             if len(tf.data) == 1:
                 download_dir = tf.data[0].parent
                 print(f"matched data @ {download_dir}\nAdding to transmission...")
+                
                 cmd = TransmissionCommand()
+                if username and password:
+                    cmd.auth(username, password)
                 cmd.add(tf.path).download_dir(download_dir)
-                res = cmd.auth(username, password).exec()
+                res = cmd.exec()
                 print("Transmission response:", res)
+                
                 time.sleep(sleep)
             elif len(tf.data) > 1:
                 uniq_parents = {f.parent for f in tf.data}
