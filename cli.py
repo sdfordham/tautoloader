@@ -5,8 +5,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Optional
 
-from .torrent import TorrentData
-from .methods import find_files, add_to_transmission
+from transmission import TransmissionCommand
 
 
 def main(
@@ -28,18 +27,14 @@ def main(
             continue
         tf.find_data(data_files)
         if tf.data:
-            print(f"Torrent file @ {tf.path}")
-            print(f"  from tracker {tf.tracker}")
+            print(f"Torrent file @ {tf.path}\n  from tracker {tf.tracker}")
             if len(tf.data) == 1:
-                print(f"matched data @ {tf.data[0].parent}")
-                print(f"Adding to transmission...")
-                res = add_to_transmission(
-                    add=tf.path,
-                    download_dir=tf.data[0].parent,
-                    username=username,
-                    password=password,
-                )
-                print("Response:", res)
+                download_dir = tf.data[0].parent
+                print(f"matched data @ {download_dir}\nAdding to transmission...")
+                cmd = TransmissionCommand()
+                cmd.add(tf.path).download_dir(download_dir)
+                res = cmd.auth(username, password).exec()
+                print("Transmission response:", res)
                 time.sleep(sleep)
             elif len(tf.data) > 1:
                 uniq_parents = {f.parent for f in tf.data}
