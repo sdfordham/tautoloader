@@ -64,8 +64,8 @@ def main(
 
 if __name__ == "__main__":
     parser = ArgumentParser(prog="transmission autoloader")
-    parser.add_argument("-t", "--torrent_folder", type=Path)
-    parser.add_argument("-d", "--data_folder", type=Path)
+    parser.add_argument("-t", "--torrent_folder", type=Path, required=True)
+    parser.add_argument("-d", "--data_folder", type=Path, required=True)
     parser.add_argument("-e", "--exclude_tracker", type=str, default=None)
     parser.add_argument("-u", "--username", type=str, default=None)
     parser.add_argument("-s", "--sleep", type=int, default=5)
