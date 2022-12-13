@@ -5,7 +5,9 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Optional
 
+from torrent import TorrentData
 from transmission import TransmissionCommand
+from methods import find_files, parse_list_output
 
 
 def main(
@@ -16,10 +18,20 @@ def main(
     password: Optional[str],
     sleep: int,
 ):
+    # Get the files
     torrent_files = [
         TorrentData(f) for f in find_files(torrent_folder, valid_exts=[".torrent"])
     ]
     data_files = find_files(data_folder, exclude_exts=[".torrent"])
+
+    # Get the output from the client
+    cmd = TransmissionCommand()
+    if username and password:
+        cmd.auth(username, password)
+    cmd.list()
+    res = cmd.exec()
+    client_output = parse_list_output(res)
+
     for tf in torrent_files:
         if exclude_tracker and (
             tf.tracker is None or re.match(exclude_tracker, tf.tracker)
@@ -36,9 +48,8 @@ def main(
                 if username and password:
                     cmd.auth(username, password)
                 cmd.add(tf.path).download_dir(download_dir)
-                res = cmd.exec()
+                #res = cmd.exec()
                 print("Transmission response:", res)
-                
                 time.sleep(sleep)
             elif len(tf.data) > 1:
                 uniq_parents = {f.parent for f in tf.data}
