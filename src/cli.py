@@ -5,9 +5,9 @@ from argparse import ArgumentParser
 from pathlib import Path
 from typing import Optional
 
-from torrent import TorrentData
-from transmission import TransmissionCommand
-from methods import find_files, parse_list_output
+from src.torrent import TorrentData
+from src.transmission import TransmissionCommand
+from src.methods import find_files, parse_list_output
 
 
 def main(

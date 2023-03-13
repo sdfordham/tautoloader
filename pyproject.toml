@@ -1,0 +1,10 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "transmission_autoloader"
+requires-python = ">=3.8"
+
+[project.scripts]
+my-script = "transmission_autoloader.cli:main"
