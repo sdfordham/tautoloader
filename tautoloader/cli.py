@@ -48,7 +48,8 @@ def main(
                 if username and password:
                     cmd.auth(username, password)
                 cmd.add(tf.path).download_dir(download_dir)
-                #res = cmd.exec()
+                res = cmd.exec()
+                
                 print("Transmission response:", res)
                 time.sleep(sleep)
             elif len(tf.data) > 1:
