@@ -3,8 +3,6 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "transmission_autoloader"
+name = "tautoloader"
 requires-python = ">=3.8"
-
-[project.scripts]
-my-script = "transmission_autoloader.cli:main"
+version = "0.0.1"
