@@ -3,6 +3,8 @@ from pathlib import Path
 from difflib import get_close_matches
 from typing import Optional, Union
 
+import bencodepy
+
 
 class TorrentData:
     def __init__(self, path: Path, **kwargs) -> None:
@@ -46,16 +48,13 @@ class TorrentData:
         self.data = close_matches
 
     @staticmethod
-    def guess_tracker(path, read_len: int = 100) -> Optional[str]:
-        with open(path, "rb") as F:
-            line = F.readline()
-            try:
-                line_decoded = line[:read_len].decode("utf-8")
-            except UnicodeDecodeError:
-                return None
-            tracker = re.match(
-                r"^[\w]*:announce[0-9]*:http:\/\/([\w.-]+)", line_decoded
-            )
-        if tracker:
-            return tracker.group(1)
+    def guess_tracker(path: Union[Path, str]) -> Optional[str]:
+        with open(str(path), "rb") as F:
+            contents = F.read()
+        torrent_info = bencodepy.decode(contents)
+        if b"announce" in torrent_info:
+            announce = torrent_info[b"announce"].decode("utf-8")
+            tracker = re.match("http[s]*:\/\/(\w+.\w+.\w+)", announce)
+            if tracker:
+                return tracker.group(1)
         return None
